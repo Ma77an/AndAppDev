@@ -1,4 +1,4 @@
-package com.example.class3demo2;
+package com.example.Class4Demo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.example.class3demo2.model.Model;
-import com.example.class3demo2.model.Student;
+import com.example.Class4Demo.model.Model;
+import com.example.Class4Demo.model.Student;
 
 import java.util.List;
 

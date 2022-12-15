@@ -1,4 +1,4 @@
-package com.example.class3demo2;
+package com.example.Class4Demo;
 
 import android.os.Bundle;
 
@@ -23,7 +23,7 @@ public class BlueFragment extends Fragment {
     public static BlueFragment newInstance(String title) {
         BlueFragment fragment = new BlueFragment();
         Bundle data = new Bundle();
-        data.putString("Title", title);
+        data.putString("TITLE", title);
         fragment.setArguments(data);
         return fragment;
     }
@@ -33,7 +33,7 @@ public class BlueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle data = getArguments();
         if (data != null){
-            myTitle = data.getString("Title");
+            myTitle = data.getString("TITLE");
         }
     }
 

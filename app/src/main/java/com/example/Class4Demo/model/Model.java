@@ -1,4 +1,4 @@
-package com.example.class3demo2.model;
+package com.example.Class4Demo.model;
 
 import java.util.LinkedList;
 import java.util.List;
