@@ -1,6 +1,7 @@
 package com.example.Class4Demo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -9,11 +10,11 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    BlueFragment frag1;
+    StudentsListFragment frag1;
     BlueFragment frag2;
     BlueFragment frag3;
-    BlueFragment frag4;
-    BlueFragment inDisplay;
+    StudentsListFragment frag4;
+    Fragment inDisplay;
 
 
     @Override
@@ -21,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        frag1 = BlueFragment.newInstance("1");
+        frag1 = new StudentsListFragment();
         frag2 = BlueFragment.newInstance("2");
         frag3 = BlueFragment.newInstance("3");
-        frag4 = BlueFragment.newInstance("4");
+        frag4 = new StudentsListFragment();
 
         Button btn1 = findViewById(R.id.main_btn_1);
         Button btn2 = findViewById(R.id.main_btn_2);
@@ -46,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
         displayFragment(frag1);
     }
 
-    private void displayFragment(BlueFragment frag) {
+    private void displayFragment(Fragment frag) {
+        if (inDisplay == frag){
+            return;
+        }
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction tran = manager.beginTransaction();
         tran.add(R.id.main_fragment_container, frag);
