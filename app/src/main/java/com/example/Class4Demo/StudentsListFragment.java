@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +45,8 @@ public class StudentsListFragment extends Fragment {
         });
 
         View addBtn = view.findViewById(R.id.studentslistfrag_add_btn);
-        addBtn.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_studentsListFragment_to_blueFragment));
+        NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment();
+        addBtn.setOnClickListener(Navigation.createNavigateOnClickListener(action));
         return view;
     }
 }

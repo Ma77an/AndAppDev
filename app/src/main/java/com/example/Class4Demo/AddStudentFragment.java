@@ -2,13 +2,17 @@ package com.example.Class4Demo;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 
 public class AddStudentFragment extends Fragment {
@@ -29,8 +33,17 @@ public class AddStudentFragment extends Fragment {
             messageTv.setText(name);
         });
 
-        //cancelBtn.setOnClickListener(view -> finish());
+        setHasOptionsMenu(true);
+
+        cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).
+                popBackStack(R.id.studentsListFragment, false));
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }

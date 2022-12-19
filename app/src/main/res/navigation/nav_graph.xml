@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/studentsListFragment"
         android:name="com.example.Class4Demo.StudentsListFragment"
-        android:label="fragment_students_list"
+        android:label="Students List"
         tools:layout="@layout/fragment_students_list">
         <action
             android:id="@+id/action_studentsListFragment_to_blueFragment"
@@ -26,6 +26,9 @@
     <fragment
         android:id="@+id/addStudentFragment"
         android:name="com.example.Class4Demo.AddStudentFragment"
-        android:label="fragment_add_student"
+        android:label="Add Student"
         tools:layout="@layout/fragment_add_student" />
+    <action
+        android:id="@+id/action_global_addStudentFragment"
+        app:destination="@id/addStudentFragment" />
 </navigation>
