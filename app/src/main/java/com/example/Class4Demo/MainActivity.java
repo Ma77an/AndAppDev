@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if (item.getItemId() == R.id.aboutFragment) {
+//            new AlertDialogFragment().show(getSupportFragmentManager(), "TAG");
+//            return true;}else
+
         if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
         } else {
