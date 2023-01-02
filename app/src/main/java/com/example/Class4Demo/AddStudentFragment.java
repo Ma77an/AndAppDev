@@ -1,15 +1,16 @@
 package com.example.Class4Demo;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +20,15 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.navigation.Navigation;
 
+import com.example.Class4Demo.databinding.FragmentAddStudentBinding;
+import com.example.Class4Demo.model.Model;
+import com.example.Class4Demo.model.Student;
+
 
 public class AddStudentFragment extends Fragment {
+
+    FragmentAddStudentBinding binding;
+    int d = 1, m = 0, y = 2023;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,16 +53,38 @@ public class AddStudentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_student, container, false);
-        EditText nameEt = view.findViewById(R.id.addstudent_name_et);
-        EditText idEt = view.findViewById(R.id.addstudent_id_et);
-        TextView messageTv = view.findViewById(R.id.addstudent_message);
-        Button saveBtn = view.findViewById(R.id.addstudent_save_btn);
-        Button cancelBtn = view.findViewById(R.id.addstudent_cancell_btn);
+        binding = FragmentAddStudentBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        Button saveBtn = view.findViewById(R.id.save_btn);
+        Button cancelBtn = view.findViewById(R.id.cancel_btn);
+
+        binding.dateInputEt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == motionEvent.ACTION_DOWN) {
+                    Dialog dialog = new DatePickerDialog(getContext(), (datePicker, yy, mm, dd) -> {
+                        y = yy;
+                        m = mm;
+                        d = dd;
+                        binding.dateInputEt.setText("" + d + "/" + (m + 1) + "/" + y);
+                    },
+                            y, m, d);
+                    dialog.show();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         saveBtn.setOnClickListener(view1 -> {
-            String name = nameEt.getText().toString();
-            messageTv.setText(name);
+            String name = binding.nameEt.getText().toString();
+            String stId = binding.idEt.getText().toString();
+            String bDay = "" + d + "/" + (m + 1) + "/" + y;
+            Student st = new Student(stId, name, bDay, "", "", false);
+            Model.instance().addStudent(st, () -> {
+                Navigation.findNavController(view1).popBackStack();
+
+            });
         });
 
         cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).

@@ -10,28 +10,33 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.Class4Demo.databinding.FragmentStudentsListBinding;
 import com.example.Class4Demo.model.Model;
 import com.example.Class4Demo.model.Student;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class StudentsListFragment extends Fragment {
-    List<Student> data;
+    List<Student> data = new LinkedList<>();
+    StudentRecyclerAdapter adapter;
+    FragmentStudentsListBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_students_list, container, false);
-        data = Model.instance().getAllStudents();
-        RecyclerView list = view.findViewById(R.id.studentlistfrag_list);
-        list.setHasFixedSize(true);
+        binding = FragmentStudentsListBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
-        StudentRecyclerAdapter adapter = new StudentRecyclerAdapter(getLayoutInflater(), data);
-        list.setAdapter(adapter);
+        reloadData();
+
+        binding.recyclerView.setHasFixedSize(true);
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new StudentRecyclerAdapter(getLayoutInflater(), data);
+        binding.recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new StudentRecyclerAdapter.onItemClickListener() {
             @Override
@@ -39,14 +44,28 @@ public class StudentsListFragment extends Fragment {
                 Log.d("TAG", "onItemClick: " + pos);
                 Student st = data.get(pos);
                 StudentsListFragmentDirections.ActionStudentsListFragmentToBlueFragment action
-                        = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.name);
+                        = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.getName());
                 Navigation.findNavController(view).navigate(action);
             }
         });
 
-        View addBtn = view.findViewById(R.id.studentslistfrag_add_btn);
         NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment();
-        addBtn.setOnClickListener(Navigation.createNavigateOnClickListener(action));
+        binding.btnAdd.setOnClickListener(Navigation.createNavigateOnClickListener(action));
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reloadData();
+    }
+
+    void reloadData() {
+        binding.progressBar.setVisibility(getView().VISIBLE);
+        Model.instance().getAllStudents(studentList -> {
+            data = studentList;
+            adapter.setData(data);
+            binding.progressBar.setVisibility(getView().GONE);
+        });
     }
 }

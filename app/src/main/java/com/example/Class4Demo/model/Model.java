@@ -1,29 +1,64 @@
 package com.example.Class4Demo.model;
 
-import java.util.LinkedList;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.core.os.HandlerCompat;
+
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class Model {
     private static final Model _instance = new Model();
 
-    public static Model instance(){
+    public static Model instance() {
         return _instance;
     }
 
-    private Model(){
-        for (int i = 0; i < 20; i++) {
-            addStudent(new Student("name "+i,""+i, "", false));
-        }
+    private Executor executor = Executors.newSingleThreadExecutor();
+    private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
+
+    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
+
+    private Model() {
     }
 
-    List<Student> data = new LinkedList<>();
-
-    public List<Student> getAllStudents(){
-        return data;
+    public interface GetAllStudentListener {
+        void onComplete(List<Student> data);
     }
 
-    public void addStudent(Student st){
-        data.add(st);
+    public void getAllStudents(GetAllStudentListener callback) {
+        executor.execute(() -> {
+            List<Student> data = localDb.studentDao().getAll();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainHandler.post(() -> {
+                callback.onComplete(data);
+            });
+        });
+    }
+
+
+    public interface AddStudentListener {
+        void onComplete();
+    }
+
+    public void addStudent(Student st, AddStudentListener listener) {
+        executor.execute(() -> {
+            localDb.studentDao().insertAll(st);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainHandler.post(() -> {
+                listener.onComplete();
+            });
+        });
     }
 
 

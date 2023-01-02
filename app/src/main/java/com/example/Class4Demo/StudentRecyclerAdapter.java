@@ -30,7 +30,7 @@ class StudentViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 int pos = (int) cb.getTag();
                 Student st = data.get(pos);
-                st.cb = cb.isChecked();
+                st.setChecked(cb.isChecked());
             }
         });
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -43,9 +43,9 @@ class StudentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Student st, int pos) {
-        nameTv.setText(st.name);
-        idTv.setText(st.id);
-        cb.setChecked(st.cb);
+        nameTv.setText(st.getName());
+        idTv.setText(st.getId());
+        cb.setChecked(st.isChecked());
         cb.setTag(pos);
     }
 }
@@ -59,6 +59,11 @@ public class StudentRecyclerAdapter extends RecyclerView.Adapter<StudentViewHold
 
     LayoutInflater inflater;
     List<Student> data;
+
+    public void setData(List<Student> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
 
     public StudentRecyclerAdapter(LayoutInflater inflater, List<Student> data) {
         this.inflater = inflater;
