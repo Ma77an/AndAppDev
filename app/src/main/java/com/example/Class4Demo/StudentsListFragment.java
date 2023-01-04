@@ -44,7 +44,7 @@ public class StudentsListFragment extends Fragment {
                 Log.d("TAG", "onItemClick: " + pos);
                 Student st = data.get(pos);
                 StudentsListFragmentDirections.ActionStudentsListFragmentToBlueFragment action
-                        = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.getName());
+                        = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.getName(), st.getId());
                 Navigation.findNavController(view).navigate(action);
             }
         });

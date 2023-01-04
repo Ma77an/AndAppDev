@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+
+import com.example.Class4Demo.databinding.FragmentBlueBinding;
+import com.example.Class4Demo.model.Model;
+import com.example.Class4Demo.model.Student;
 
 public class BlueFragment extends Fragment {
 
@@ -18,14 +19,16 @@ public class BlueFragment extends Fragment {
         // Required empty public constructor
     }
 
-    TextView myTitleTv;
+    FragmentBlueBinding binding;
     String myTitle;
-    Button backBtn;
+    String id;
+    Student st;
 
-    public static BlueFragment newInstance(String title) {
+    public static BlueFragment newInstance(String title, String stId) {
         BlueFragment fragment = new BlueFragment();
         Bundle data = new Bundle();
         data.putString("TITLE", title);
+        data.putString("ID", stId);
         fragment.setArguments(data);
         return fragment;
     }
@@ -36,25 +39,32 @@ public class BlueFragment extends Fragment {
         Bundle data = getArguments();
         if (data != null) {
             myTitle = data.getString("TITLE");
+            id = data.getString("studentId");
+
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_blue, container, false);
+        binding = FragmentBlueBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        myTitle = BlueFragmentArgs.fromBundle(getArguments()).getBlueTitle();
-
-        myTitleTv = view.findViewById(R.id.bluefrag_title_tv);
-        if (myTitle != null) {
-            myTitleTv.setText(myTitle);
-        }
-
-        backBtn = view.findViewById(R.id.bluefrag_back_btn);
-        backBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack());
+        Model.instance().getStudentById(id, st1 -> {
+            studentDetails(st1);
+        });
 
         return view;
     }
+
+    public void studentDetails(Student st) {
+        binding.nameTv.setText("Name: " + st.getName());
+        binding.idTv.setText("ID: " + st.getId());
+        binding.phoneTv.setText("Phone: " + st.getPhone());
+        binding.addressTv.setText("Address: ");
+        binding.bDayTv.setText("Birthday: " + st.getBDate());
+        binding.cb.setChecked(st.isChecked());
+    }
+
+
 }

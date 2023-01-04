@@ -15,7 +15,7 @@ public interface StudentDao {
     @Query("select * from Student")
     List<Student> getAll();
 
-    @Query("select * from Student where id = :studentId")
+    @Query("select * from Student where id=:studentId")
     Student getStudentById(String studentId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

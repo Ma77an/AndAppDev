@@ -2,6 +2,7 @@ package com.example.Class4Demo.model;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 
@@ -16,8 +17,8 @@ public class Model {
         return _instance;
     }
 
-    private Executor executor = Executors.newSingleThreadExecutor();
-    private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
+    private final Executor executor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
 
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
@@ -31,13 +32,27 @@ public class Model {
     public void getAllStudents(GetAllStudentListener callback) {
         executor.execute(() -> {
             List<Student> data = localDb.studentDao().getAll();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             mainHandler.post(() -> {
                 callback.onComplete(data);
+            });
+        });
+    }
+
+    public interface getStudentByIdListener {
+        void onComplete(Student st);
+    }
+
+    public void getStudentById(String id, getStudentByIdListener callback) {
+        executor.execute(() -> {
+            Student st = localDb.studentDao().getStudentById(id);
+            Log.d("TAG", "getStudentById: " + st.getName());
+            mainHandler.post(() -> {
+                callback.onComplete(st);
             });
         });
     }
@@ -50,11 +65,11 @@ public class Model {
     public void addStudent(Student st, AddStudentListener listener) {
         executor.execute(() -> {
             localDb.studentDao().insertAll(st);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             mainHandler.post(() -> {
                 listener.onComplete();
             });
