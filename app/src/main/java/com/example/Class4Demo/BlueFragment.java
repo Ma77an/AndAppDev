@@ -40,7 +40,6 @@ public class BlueFragment extends Fragment {
         if (data != null) {
             myTitle = data.getString("TITLE");
             id = data.getString("studentId");
-
         }
     }
 

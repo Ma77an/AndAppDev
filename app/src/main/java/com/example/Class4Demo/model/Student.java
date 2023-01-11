@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 public class Student {
     @PrimaryKey
@@ -26,6 +29,30 @@ public class Student {
         this.avatar = avatar;
         this.checked = checked;
     }
+
+
+    public static Student fromJson(Map<String, Object> json) {
+        String id = (String) json.get("id");
+        String name = (String) json.get("name");
+        String avatar = (String) json.get("avatar");
+        String bdate = (String) json.get("bdate");
+        Boolean cb = (Boolean) json.get("cb");
+        Student st = new Student(id, name, bdate, "", avatar, cb);
+        return st;
+    }
+
+    public Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("id", getId());
+        json.put("name", getName());
+        json.put("avatar", getAvatar());
+        json.put("bdate", getBDate());
+        json.put("cb", isChecked());
+
+        return json;
+
+    }
+
 
     @NonNull
     public String getId() {

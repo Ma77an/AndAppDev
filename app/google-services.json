@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "677060331875",
+    "project_id": "colman-android-2023-83220",
+    "storage_bucket": "colman-android-2023-83220.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677060331875:android:13559475a2e04b8b7c2b56",
+        "android_client_info": {
+          "package_name": "com.example.Class4Demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "677060331875-q1ebmva68fbc561jgetsj4d16jolml44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEejX9m5dTRGFjjRxl1E9uRbvxFT8Dy9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "677060331875-q1ebmva68fbc561jgetsj4d16jolml44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
