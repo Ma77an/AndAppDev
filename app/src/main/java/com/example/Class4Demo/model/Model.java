@@ -1,5 +1,6 @@
 package com.example.Class4Demo.model;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -12,24 +13,26 @@ import java.util.concurrent.Executors;
 public class Model {
     private static final Model _instance = new Model();
 
+
+    private final Executor executor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
+    private final FirebaseModel firebaseModel = new FirebaseModel();
+    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
+
     public static Model instance() {
         return _instance;
     }
 
-    private final Executor executor = Executors.newSingleThreadExecutor();
-    private final Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
-    private FirebaseModel firebaseModel = new FirebaseModel();
-
-    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
-
     private Model() {
     }
 
-    public interface GetAllStudentListener {
-        void onComplete(List<Student> data);
+
+    public interface Listener<T> {
+        void onComplete(T data);
     }
 
-    public void getAllStudents(GetAllStudentListener callback) {
+
+    public void getAllStudents(Listener<List<Student>> callback) {
         firebaseModel.getAllStudents(callback);
 //        executor.execute(() -> {
 //            List<Student> data = localDb.studentDao().getAll();
@@ -42,11 +45,8 @@ public class Model {
 //        });
     }
 
-    public interface getStudentByIdListener {
-        void onComplete(Student st);
-    }
 
-    public void getStudentById(String id, getStudentByIdListener callback) {
+    public void getStudentById(String id, Listener<Student> callback) {
         firebaseModel.getStudentById(id, callback);
 //        executor.execute(() -> {
 //            Student st = localDb.studentDao().getStudentById(id);
@@ -56,11 +56,7 @@ public class Model {
     }
 
 
-    public interface AddStudentListener {
-        void onComplete();
-    }
-
-    public void addStudent(Student st, AddStudentListener listener) {
+    public void addStudent(Student st, Listener<Void> listener) {
         firebaseModel.addStudent(st, listener);
 //        executor.execute(() -> {
 //            localDb.studentDao().insertAll(st);
@@ -74,4 +70,7 @@ public class Model {
     }
 
 
+    public void uploadImage(String name, Bitmap bitmap, Listener<String> listener) {
+        firebaseModel.uploadImage(name, bitmap, listener);
+    }
 }

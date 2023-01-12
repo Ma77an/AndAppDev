@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.example.Class4Demo.databinding.FragmentBlueBinding;
 import com.example.Class4Demo.model.Model;
 import com.example.Class4Demo.model.Student;
+import com.squareup.picasso.Picasso;
 
 public class BlueFragment extends Fragment {
 
@@ -27,7 +28,6 @@ public class BlueFragment extends Fragment {
     public static BlueFragment newInstance(String title, String stId) {
         BlueFragment fragment = new BlueFragment();
         Bundle data = new Bundle();
-        data.putString("TITLE", title);
         data.putString("ID", stId);
         fragment.setArguments(data);
         return fragment;
@@ -38,7 +38,6 @@ public class BlueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle data = getArguments();
         if (data != null) {
-            myTitle = data.getString("TITLE");
             id = data.getString("studentId");
         }
     }
@@ -49,8 +48,10 @@ public class BlueFragment extends Fragment {
         binding = FragmentBlueBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().getStudentById(id, st1 -> {
             studentDetails(st1);
+            binding.progressBar.setVisibility(View.GONE);
         });
 
         return view;
@@ -63,6 +64,11 @@ public class BlueFragment extends Fragment {
         binding.addressTv.setText("Address: ");
         binding.bDayTv.setText("Birthday: " + st.getBDate());
         binding.cb.setChecked(st.isChecked());
+        if (st.getAvatar() != "") {
+            Picasso.get().load(st.getAvatar()).placeholder(R.drawable.avatar).into(binding.avatarImg);
+        } else {
+            binding.avatarImg.setImageResource(R.drawable.avatar);
+        }
     }
 
 

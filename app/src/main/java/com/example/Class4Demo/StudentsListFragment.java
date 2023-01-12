@@ -61,11 +61,11 @@ public class StudentsListFragment extends Fragment {
     }
 
     void reloadData() {
-        binding.progressBar.setVisibility(getView().VISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().getAllStudents(studentList -> {
             data = studentList;
             adapter.setData(data);
-            binding.progressBar.setVisibility(getView().GONE);
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

@@ -4,12 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Class4Demo.model.Student;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -18,12 +20,14 @@ class StudentViewHolder extends RecyclerView.ViewHolder {
     TextView idTv;
     CheckBox cb;
     List<Student> data;
+    ImageView avatarImage;
 
     public StudentViewHolder(@NonNull View itemView, StudentRecyclerAdapter.onItemClickListener listener, List<Student> data) {
         super(itemView);
         this.data = data;
         nameTv = itemView.findViewById(R.id.studentlistrow_name_tv);
         idTv = itemView.findViewById(R.id.studentlistrow_id_tv);
+        avatarImage = itemView.findViewById(R.id.studentlistrow_avatar_img);
         cb = itemView.findViewById(R.id.studentlistrow_cb);
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +51,11 @@ class StudentViewHolder extends RecyclerView.ViewHolder {
         idTv.setText(st.getId());
         cb.setChecked(st.isChecked());
         cb.setTag(pos);
+        if (st.getAvatar() != "") {
+            Picasso.get().load(st.getAvatar()).placeholder(R.drawable.avatar).into(avatarImage);
+        } else {
+            avatarImage.setImageResource(R.drawable.avatar);
+        }
     }
 }
 
