@@ -87,7 +87,7 @@ public class AddStudentFragment extends Fragment {
         binding = FragmentAddStudentBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        binding.dateInputEt.setOnTouchListener(new View.OnTouchListener() {
+        binding.bithdayInput.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == motionEvent.ACTION_DOWN) {
@@ -95,7 +95,7 @@ public class AddStudentFragment extends Fragment {
                         y = yy;
                         m = mm;
                         d = dd;
-                        binding.dateInputEt.setText("" + d + "/" + (m + 1) + "/" + y);
+                        binding.bithdayInput.setText("" + d + "/" + (m + 1) + "/" + y);
                     },
                             y, m, d);
                     dialog.show();
@@ -110,7 +110,7 @@ public class AddStudentFragment extends Fragment {
             String name = binding.nameEt.getText().toString();
             String stId = binding.idEt.getText().toString();
             String bDay = "" + d + "/" + (m + 1) + "/" + y;
-            Student st = new Student(stId, name, bDay, "", "", false);
+            Student st = new Student(stId, name, "", bDay, "", "", false);
             if (isAvatarSelected) {
                 binding.avatarImg.setDrawingCacheEnabled(true);
                 binding.avatarImg.buildDrawingCache();

@@ -54,7 +54,7 @@
         app:startIconDrawable="@drawable/ic_baseline_edit_calendar_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/date_input_et"
+            android:id="@+id/date_textField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Birth Date" />

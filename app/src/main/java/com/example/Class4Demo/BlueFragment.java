@@ -61,8 +61,8 @@ public class BlueFragment extends Fragment {
         binding.nameTv.setText("Name: " + st.getName());
         binding.idTv.setText("ID: " + st.getId());
         binding.phoneTv.setText("Phone: " + st.getPhone());
-        binding.addressTv.setText("Address: ");
-        binding.bDayTv.setText("Birthday: " + st.getBDate());
+        binding.addressTv.setText("Instagram: @" + st.getInstagram());
+        binding.bDayTv.setText("Birthday: " + st.getBirthday());
         binding.cb.setChecked(st.isChecked());
         if (st.getAvatar() != "") {
             Picasso.get().load(st.getAvatar()).placeholder(R.drawable.avatar).into(binding.avatarImg);

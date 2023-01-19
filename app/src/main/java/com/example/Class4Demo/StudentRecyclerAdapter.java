@@ -51,7 +51,7 @@ class StudentViewHolder extends RecyclerView.ViewHolder {
         idTv.setText(st.getId());
         cb.setChecked(st.isChecked());
         cb.setTag(pos);
-        if (st.getAvatar() != "") {
+        if (!st.getAvatar().equals("")) {
             Picasso.get().load(st.getAvatar()).placeholder(R.drawable.avatar).into(avatarImage);
         } else {
             avatarImage.setImageResource(R.drawable.avatar);

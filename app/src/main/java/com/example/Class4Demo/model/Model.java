@@ -3,6 +3,7 @@ package com.example.Class4Demo.model;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 
@@ -33,16 +34,30 @@ public class Model {
 
 
     public void getAllStudents(Listener<List<Student>> callback) {
-        firebaseModel.getAllStudents(callback);
-//        executor.execute(() -> {
-//            List<Student> data = localDb.studentDao().getAll();
-////            try {
-////                Thread.sleep(2000);
-////            } catch (InterruptedException e) {
-////                e.printStackTrace();
-////            }
-//            mainHandler.post(() -> callback.onComplete(data));
-//        });
+        //get local last update
+        Long localLastUpdate = Student.getLocalLastUpdate();
+
+        //get all updated records from firebase since last local update
+        firebaseModel.getAllStudentsSince(localLastUpdate, list -> {
+            executor.execute(() -> {
+                Log.d("TAG", "firebase returned: " + list.size());
+                Long time = localLastUpdate;
+                for (Student st : list) {
+                    //insert new records into ROOM
+                    localDb.studentDao().insertAll(st);
+                    if (time < st.getLastUpdated())
+                        time = st.getLastUpdated();
+                }
+                //update last local update
+                Student.setLocalLastUpdate(time);
+
+                //return complete list from ROOM
+                List<Student> complete = localDb.studentDao().getAll();
+                mainHandler.post(() -> {
+                    callback.onComplete(complete);
+                });
+            });
+        });
     }
 
 

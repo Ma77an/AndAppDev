@@ -1,8 +1,15 @@
 package com.example.Class4Demo.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.example.Class4Demo.MyApplication;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,44 +20,88 @@ public class Student {
     @NonNull
     private String id = "";
     private String name = "";
-    private String bDate = "";
-    private String phone = "";
     private String avatar = "";
+    private String birthday = "";
+    private String phone = "";
+    private String instagram = "";
     private boolean checked = false;
+    private Long lastUpdated;
 
     public Student() {
     }
 
-    public Student(@NonNull String id, String name, String bDate, String phone, String avatar, boolean checked) {
+    public Student(@NonNull String id, String name, String avatar, String birthday,
+                   String phone, String instagram, boolean checked) {
         this.id = id;
         this.name = name;
-        this.bDate = bDate;
-        this.phone = phone;
         this.avatar = avatar;
+        this.birthday = birthday;
+        this.phone = phone;
+        this.instagram = instagram;
         this.checked = checked;
+    }
+
+    static final String ID = "id";
+    static final String NAME = "name";
+    static final String AVATAR = "avatar";
+    static final String BDAY = "birthday";
+    static final String PHONE = "phone";
+    static final String INSTAGRAM = "instagram";
+    static final String CB = "checked";
+    static final String LAST_UPDATED = "lastUpdated";
+
+    static final String LAST_LOCAL_UPDATED = "students_last_local_updated";
+
+    static final String COLLECTION = "students";
+
+
+    public static Long getLocalLastUpdate() {
+        SharedPreferences sharedPref = MyApplication.getMyContext()
+                .getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        return sharedPref.getLong(LAST_LOCAL_UPDATED, 0);
+    }
+
+    public static void setLocalLastUpdate(Long time) {
+        SharedPreferences sharedPref = MyApplication.getMyContext()
+                .getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(LAST_LOCAL_UPDATED, time);
+        editor.commit();
     }
 
 
     public static Student fromJson(Map<String, Object> json) {
-        String id = (String) json.get("id");
-        String name = (String) json.get("name");
-        String avatar = (String) json.get("avatar");
-        String bdate = (String) json.get("bdate");
-        Boolean cb = (Boolean) json.get("cb");
-        Student st = new Student(id, name, bdate, "", avatar, cb);
+        String id = (String) json.get(ID);
+        String name = (String) json.get(NAME);
+        String avatar = (String) json.get(AVATAR);
+        String bdate = (String) json.get(BDAY);
+        String phone = (String) json.get(PHONE);
+        String instagram = (String) json.get(INSTAGRAM);
+        Boolean cb = (Boolean) json.get(CB);
+
+        Student st = new Student(id, name, avatar, bdate, phone, instagram, Boolean.TRUE.equals(cb));
+
+        try {
+            Timestamp time = (Timestamp) json.get(LAST_UPDATED);
+            st.setLastUpdated(time.getSeconds());
+        } catch (Exception ignored) {
+        }
+
         return st;
     }
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<>();
-        json.put("id", getId());
-        json.put("name", getName());
-        json.put("avatar", getAvatar());
-        json.put("bdate", getBDate());
-        json.put("cb", isChecked());
+        json.put(ID, getId());
+        json.put(NAME, getName());
+        json.put(AVATAR, getAvatar());
+        json.put(BDAY, getBirthday());
+        json.put(PHONE, getPhone());
+        json.put(INSTAGRAM, getInstagram());
+        json.put(CB, isChecked());
+        json.put(LAST_UPDATED, FieldValue.serverTimestamp());
 
         return json;
-
     }
 
 
@@ -71,12 +122,12 @@ public class Student {
         this.name = name;
     }
 
-    public String getBDate() {
-        return bDate;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setBDate(String bDate) {
-        this.bDate = bDate;
+    public void setBirthday(String bDate) {
+        this.birthday = bDate;
     }
 
     public String getPhone() {
@@ -95,12 +146,29 @@ public class Student {
         this.avatar = avatar;
     }
 
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
+    }
+
     public boolean isChecked() {
         return checked;
     }
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+
+    public Long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Long lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
 }

@@ -62,7 +62,7 @@ public class AboutFragment extends Fragment {
             dialog.show();
         });
 
-        binding.dateInputEt.setOnTouchListener(new View.OnTouchListener() {
+        binding.dateTextField.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == motionEvent.ACTION_DOWN) {
@@ -88,6 +88,6 @@ public class AboutFragment extends Fragment {
     }
 
     void setDate2() {
-        binding.dateInputEt.setText("" + d + "/" + (m + 1) + "/" + y);
+        binding.dateTextField.setText("" + d + "/" + (m + 1) + "/" + y);
     }
 }
