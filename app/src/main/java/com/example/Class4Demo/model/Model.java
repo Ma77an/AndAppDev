@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -33,7 +35,26 @@ public class Model {
     }
 
 
-    public void getAllStudents(Listener<List<Student>> callback) {
+    public enum LoadingState {
+        LOADING,
+        NOT_LOADING
+    }
+
+    final public MutableLiveData<LoadingState> EventStudentsListLoadingState =
+            new MutableLiveData<>(LoadingState.NOT_LOADING);
+
+
+    private LiveData<List<Student>> studentList;
+
+    public LiveData<List<Student>> getAllStudents() {
+        if (studentList == null) {
+            studentList = localDb.studentDao().getAll();
+        }
+        return studentList;
+    }
+
+    public void refreshAllStudents() {
+        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
         //get local last update
         Long localLastUpdate = Student.getLocalLastUpdate();
 
@@ -50,38 +71,28 @@ public class Model {
                 }
                 //update last local update
                 Student.setLocalLastUpdate(time);
-
-                //return complete list from ROOM
-                List<Student> complete = localDb.studentDao().getAll();
-                mainHandler.post(() -> {
-                    callback.onComplete(complete);
-                });
+                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }
 
 
     public void getStudentById(String id, Listener<Student> callback) {
-        firebaseModel.getStudentById(id, callback);
-//        executor.execute(() -> {
-//            Student st = localDb.studentDao().getStudentById(id);
-//            Log.d("TAG", "getStudentById: " + st.getName());
-//            mainHandler.post(() -> callback.onComplete(st));
-//        });
+//        firebaseModel.getStudentById(id, callback);
+        executor.execute(() -> {
+            Student st = localDb.studentDao().getStudentById(id);
+            Log.d("TAG", "getStudentById: " + st.getName());
+            mainHandler.post(() -> callback.onComplete(st));
+        });
     }
 
 
     public void addStudent(Student st, Listener<Void> listener) {
-        firebaseModel.addStudent(st, listener);
-//        executor.execute(() -> {
-//            localDb.studentDao().insertAll(st);
-////            try {
-////                Thread.sleep(2000);
-////            } catch (InterruptedException e) {
-////                e.printStackTrace();
-////            }
-//            mainHandler.post(listener::onComplete);
-//        });
+        firebaseModel.addStudent(st, (Void) -> {
+            refreshAllStudents();
+            listener.onComplete(null);
+        });
+
     }
 
 

@@ -6,19 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".StudentsListFragment">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +17,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <ImageButton
         android:id="@+id/btnAdd"

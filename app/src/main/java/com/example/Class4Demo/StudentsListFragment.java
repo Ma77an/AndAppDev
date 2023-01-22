@@ -35,14 +35,14 @@ public class StudentsListFragment extends Fragment {
         binding.recyclerView.setHasFixedSize(true);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new StudentRecyclerAdapter(getLayoutInflater(), viewModel.getData());
+        adapter = new StudentRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue());
         binding.recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new StudentRecyclerAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int pos) {
                 Log.d("TAG", "onItemClick: " + pos);
-                Student st = viewModel.getData().get(pos);
+                Student st = viewModel.getData().getValue().get(pos);
                 StudentsListFragmentDirections.ActionStudentsListFragmentToBlueFragment action
                         = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.getName(), st.getId());
                 Navigation.findNavController(view).navigate(action);
@@ -51,6 +51,19 @@ public class StudentsListFragment extends Fragment {
 
         NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment();
         binding.btnAdd.setOnClickListener(Navigation.createNavigateOnClickListener(action));
+
+        viewModel.getData().observe(getViewLifecycleOwner(), list -> {
+            adapter.setData(list);
+//            binding.progressBar.setVisibility(View.GONE);
+        });
+
+        Model.instance().EventStudentsListLoadingState.observe(getViewLifecycleOwner(), loadingState -> {
+            binding.swipeRefresh.setRefreshing(loadingState == Model.LoadingState.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(this::reloadData);
+
+
         return view;
     }
 
@@ -60,18 +73,8 @@ public class StudentsListFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(StudentsListFragmentViewModel.class);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        reloadData();
-    }
-
     void reloadData() {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        Model.instance().getAllStudents(studentList -> {
-            viewModel.setData(studentList);
-            adapter.setData(viewModel.getData());
-            binding.progressBar.setVisibility(View.GONE);
-        });
+//        binding.progressBar.setVisibility(View.VISIBLE);
+        Model.instance().refreshAllStudents();
     }
 }
