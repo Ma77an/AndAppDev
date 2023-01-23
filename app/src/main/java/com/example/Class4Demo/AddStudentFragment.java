@@ -38,10 +38,18 @@ public class AddStudentFragment extends Fragment {
     ActivityResultLauncher<Void> cameraLauncher;
     ActivityResultLauncher<String> galleryAppLauncher;
     Boolean isAvatarSelected = false;
+    String uid;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle data = getArguments();
+        if (data != null) {
+            uid = data.getString("uid");
+            Log.d("TAG", "onCreate: !@#@#$@!#%@!#$!±@$!±$!±@$");
+            Log.d("TAG", "onCreate: !@#@#$@!#%@!#$!±@$!±$!±@$" + uid);
+
+        }
 
         FragmentActivity parentActivity = getActivity();
         parentActivity.addMenuProvider(new MenuProvider() {
@@ -86,6 +94,8 @@ public class AddStudentFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAddStudentBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        binding.idEt.setText(uid);
+        Log.d("TAG", "onCreateView: uid is" + uid);
 
         binding.bithdayInput.setOnTouchListener(new View.OnTouchListener() {
             @Override

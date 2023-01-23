@@ -76,6 +76,10 @@ public class Model {
         });
     }
 
+    public void createStudent(String email, String password, Listener<String> callback) {
+        firebaseModel.createStudent(email, password, callback);
+    }
+
 
     public void getStudentById(String id, Listener<Student> callback) {
 //        firebaseModel.getStudentById(id, callback);

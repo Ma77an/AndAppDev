@@ -2,14 +2,20 @@ package com.example.Class4Demo.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.Class4Demo.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -25,6 +31,8 @@ import java.util.List;
 public class FirebaseModel {
     FirebaseFirestore db;
     FirebaseStorage storage;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
 
     FirebaseModel() {
         db = FirebaseFirestore.getInstance();
@@ -35,6 +43,30 @@ public class FirebaseModel {
         db.setFirestoreSettings(settings);
 
         storage = FirebaseStorage.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    public void createStudent(String email, String password, Model.Listener<String> callback) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "createUserWithEmail:success");
+                            user = mAuth.getCurrentUser();
+                            callback.onComplete(user.getUid());
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(MyApplication.getMyContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            callback.onComplete("");
+                        }
+
+                    }
+                });
     }
 
 

@@ -49,7 +49,7 @@ public class StudentsListFragment extends Fragment {
             }
         });
 
-        NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment();
+        NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment("0147896325");
         binding.btnAdd.setOnClickListener(Navigation.createNavigateOnClickListener(action));
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {
