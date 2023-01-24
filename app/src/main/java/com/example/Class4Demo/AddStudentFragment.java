@@ -55,7 +55,7 @@ public class AddStudentFragment extends Fragment {
         parentActivity.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.removeItem(R.id.addStudentFragment);
+//                menu.removeItem(R.id.addPostFragment);
             }
 
             @Override
@@ -130,16 +130,19 @@ public class AddStudentFragment extends Fragment {
                         st.setAvatar(url);
                     }
                     Model.instance().addStudent(st, (unused) -> {
-                        Navigation.findNavController(view1).popBackStack();
+//                        Navigation.findNavController(view1).popBackStack();
                         binding.progressBar.setVisibility(View.GONE);
                     });
                 });
             } else {
                 Model.instance().addStudent(st, (unused) -> {
-                    Navigation.findNavController(view1).popBackStack();
+//                    Navigation.findNavController(view1).popBackStack();
                     binding.progressBar.setVisibility(View.GONE);
                 });
             }
+
+            Navigation.findNavController(view1).
+                    navigate(AddStudentFragmentDirections.actionAddStudentFragmentToPostListFragment());
         });
 
 //        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).

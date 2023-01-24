@@ -5,11 +5,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.Class4Demo.MyApplication;
+import com.example.Class4Demo.PostDao;
 import com.example.Class4Demo.StudentDao;
 
-@Database(entities = {Student.class}, version = 62)
+@Database(entities = {Student.class, Post.class}, version = 64)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract StudentDao studentDao();
+
+    public abstract PostDao postDao();
 }
 
 public class AppLocalDb {

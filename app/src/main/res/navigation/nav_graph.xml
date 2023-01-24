@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/welcomeFragment">
+    app:startDestination="@id/postListFragment">
 
     <fragment
         android:id="@+id/studentsListFragment"
@@ -34,6 +34,9 @@
         <argument
             android:name="uid"
             app:argType="string" />
+        <action
+            android:id="@+id/action_addStudentFragment_to_postListFragment"
+            app:destination="@id/postListFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_addStudentFragment"
@@ -76,4 +79,14 @@
             android:id="@+id/action_welcomeFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/postListFragment"
+        android:name="com.example.Class4Demo.PostListFragment"
+        android:label="fragment_post_list"
+        tools:layout="@layout/fragment_post_list" />
+    <fragment
+        android:id="@+id/addPostFragment"
+        android:name="com.example.Class4Demo.AddPostFragment"
+        android:label="fragment_add_post"
+        tools:layout="@layout/fragment_add_post" />
 </navigation>

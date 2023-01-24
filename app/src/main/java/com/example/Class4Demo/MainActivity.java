@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().findFragmentById(R.id.main_navhost);
             navController = navHostFragment.getNavController();
             NavigationUI.setupActionBarWithNavController(this, navController);
-            navController.navigate(R.id.studentsListFragment);
+            navController.navigate(R.id.postListFragment);
             this.addMenuProvider(new MenuProvider() {
                 @Override
                 public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {

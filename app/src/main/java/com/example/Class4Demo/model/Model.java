@@ -45,14 +45,25 @@ public class Model {
     final public MutableLiveData<LoadingState> EventStudentsListLoadingState =
             new MutableLiveData<>(LoadingState.NOT_LOADING);
 
+    final public MutableLiveData<LoadingState> EventPostsListLoadingState =
+            new MutableLiveData<>(LoadingState.NOT_LOADING);
+
 
     private LiveData<List<Student>> studentList;
+    private LiveData<List<Post>> postList;
 
     public LiveData<List<Student>> getAllStudents() {
         if (studentList == null) {
             studentList = localDb.studentDao().getAll();
         }
         return studentList;
+    }
+
+    public LiveData<List<Post>> getAllPosts() {
+        if (postList == null) {
+            postList = localDb.postDao().getAll();
+        }
+        return postList;
     }
 
     public void refreshAllStudents() {
@@ -78,6 +89,29 @@ public class Model {
         });
     }
 
+    public void refreshAllPosts() {
+        EventPostsListLoadingState.setValue(LoadingState.LOADING);
+        //get local last update
+        Long localLastUpdate = Post.getLocalLastUpdate();
+
+        //get all updated records from firebase since last local update
+        firebaseModel.getAllPostsSince(localLastUpdate, list -> {
+            executor.execute(() -> {
+                Log.d("TAG", "firebase returned: " + list.size());
+                Long time = localLastUpdate;
+                for (Post pst : list) {
+                    //insert new records into ROOM
+                    localDb.postDao().insertAll(pst);
+                    if (time < pst.getLastUpdated())
+                        time = pst.getLastUpdated();
+                }
+                //update last local update
+                Post.setLocalLastUpdate(time);
+                EventPostsListLoadingState.postValue(LoadingState.NOT_LOADING);
+            });
+        });
+    }
+
     public void signUp(String email, String password, Listener<String> callback) {
         firebaseModel.signUp(email, password, callback);
     }
@@ -96,8 +130,17 @@ public class Model {
 //        firebaseModel.getStudentById(id, callback);
         executor.execute(() -> {
             Student st = localDb.studentDao().getStudentById(id);
-            Log.d("TAG", "getStudentById: " + st.getName());
+//            Log.d("TAG", "getStudentById: " + st.getName());
             mainHandler.post(() -> callback.onComplete(st));
+        });
+    }
+
+    public void getPostById(String id, Listener<Post> callback) {
+//        firebaseModel.getStudentById(id, callback);
+        executor.execute(() -> {
+            Post pst = localDb.postDao().getPosyById(id);
+            Log.d("TAG", "getPostById: " + pst.getTitle());
+            mainHandler.post(() -> callback.onComplete(pst));
         });
     }
 
@@ -105,6 +148,13 @@ public class Model {
     public void addStudent(Student st, Listener<Void> listener) {
         firebaseModel.addStudent(st, (Void) -> {
             refreshAllStudents();
+            listener.onComplete(null);
+        });
+    }
+
+    public void addPost(Post pst, Listener<Void> listener) {
+        firebaseModel.addPost(pst, (Void) -> {
+            refreshAllPosts();
             listener.onComplete(null);
         });
 

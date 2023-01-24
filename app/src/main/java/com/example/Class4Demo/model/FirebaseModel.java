@@ -110,6 +110,26 @@ public class FirebaseModel {
                 });
     }
 
+    public void getAllPostsSince(Long since, Model.Listener<List<Post>> callback) {
+        db.collection(Post.COLLECTION)
+                .whereGreaterThanOrEqualTo(Post.LAST_UPDATED, new Timestamp(since, 0))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Post> list = new LinkedList<Post>();
+                        if (task.isSuccessful()) {
+                            QuerySnapshot jsonsList = task.getResult();
+                            for (DocumentSnapshot json : jsonsList) {
+                                Post pst = Post.fromJson(json.getData());
+                                list.add(pst);
+                            }
+                        }
+                        callback.onComplete(list);
+                    }
+                });
+    }
+
 
     public void getStudentById(String id, Model.Listener<Student> callback) {
         db.collection("students").whereEqualTo("id", id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -127,9 +147,36 @@ public class FirebaseModel {
         });
     }
 
+    public void getPostById(String id, Model.Listener<Post> callback) {
+        db.collection(Post.COLLECTION).whereEqualTo(Post.ID, id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Post pst = new Post();
+                if (task.isSuccessful()) {
+                    QuerySnapshot jsonsList = task.getResult();
+                    for (DocumentSnapshot json : jsonsList) {
+                        pst = Post.fromJson(json.getData());
+                    }
+                }
+                callback.onComplete(pst);
+            }
+        });
+    }
+
 
     public void addStudent(Student st, Model.Listener<Void> listener) {
         db.collection(Student.COLLECTION).document(st.getId()).set(st.toJson())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listener.onComplete(null);
+                    }
+                });
+
+    }
+
+    public void addPost(Post pst, Model.Listener<Void> listener) {
+        db.collection(Post.COLLECTION).document(pst.getPostId()).set(pst.toJson())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
