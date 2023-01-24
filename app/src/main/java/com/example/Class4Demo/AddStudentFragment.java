@@ -120,7 +120,7 @@ public class AddStudentFragment extends Fragment {
             String name = binding.nameEt.getText().toString();
             String stId = binding.idEt.getText().toString();
             String bDay = "" + d + "/" + (m + 1) + "/" + y;
-            Student st = new Student(stId, name, "", bDay, "", "", false);
+            Student st = new Student(stId, name, "", bDay, "", "");
             if (isAvatarSelected) {
                 binding.avatarImg.setDrawingCacheEnabled(true);
                 binding.avatarImg.buildDrawingCache();

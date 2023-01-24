@@ -34,7 +34,6 @@ class StudentViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 int pos = (int) cb.getTag();
                 Student st = data.get(pos);
-                st.setChecked(cb.isChecked());
             }
         });
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -49,8 +48,6 @@ class StudentViewHolder extends RecyclerView.ViewHolder {
     public void bind(Student st, int pos) {
         nameTv.setText(st.getName());
         idTv.setText(st.getId());
-        cb.setChecked(st.isChecked());
-        cb.setTag(pos);
         if (!st.getAvatar().equals("")) {
             Picasso.get().load(st.getAvatar()).placeholder(R.drawable.avatar).into(avatarImage);
         } else {

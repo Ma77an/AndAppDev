@@ -24,21 +24,20 @@ public class Student {
     private String birthday = "";
     private String phone = "";
     private String instagram = "";
-    private boolean checked = false;
+
     private Long lastUpdated;
 
     public Student() {
     }
 
     public Student(@NonNull String id, String name, String avatar, String birthday,
-                   String phone, String instagram, boolean checked) {
+                   String phone, String instagram) {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.birthday = birthday;
         this.phone = phone;
         this.instagram = instagram;
-        this.checked = checked;
     }
 
     static final String ID = "id";
@@ -47,7 +46,6 @@ public class Student {
     static final String BDAY = "birthday";
     static final String PHONE = "phone";
     static final String INSTAGRAM = "instagram";
-    static final String CB = "checked";
     static final String LAST_UPDATED = "lastUpdated";
 
     static final String LAST_LOCAL_UPDATED = "students_last_local_updated";
@@ -77,9 +75,8 @@ public class Student {
         String bdate = (String) json.get(BDAY);
         String phone = (String) json.get(PHONE);
         String instagram = (String) json.get(INSTAGRAM);
-        Boolean cb = (Boolean) json.get(CB);
 
-        Student st = new Student(id, name, avatar, bdate, phone, instagram, Boolean.TRUE.equals(cb));
+        Student st = new Student(id, name, avatar, bdate, phone, instagram);
 
         try {
             Timestamp time = (Timestamp) json.get(LAST_UPDATED);
@@ -98,7 +95,6 @@ public class Student {
         json.put(BDAY, getBirthday());
         json.put(PHONE, getPhone());
         json.put(INSTAGRAM, getInstagram());
-        json.put(CB, isChecked());
         json.put(LAST_UPDATED, FieldValue.serverTimestamp());
 
         return json;
@@ -152,14 +148,6 @@ public class Student {
 
     public void setInstagram(String instagram) {
         this.instagram = instagram;
-    }
-
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
     }
 
 
