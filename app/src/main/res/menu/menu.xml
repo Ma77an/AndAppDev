@@ -12,4 +12,8 @@
         android:icon="@drawable/ic_outline_info_24"
         android:title="About"
         app:showAsAction="ifRoom" />
+    <item
+        android:icon="@drawable/twotone_waving_hand_24"
+        android:title="welcomeFragment"
+        app:showAsAction="always" />
 </menu>

@@ -18,22 +18,14 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.navigation.Navigation;
 
-import com.example.Class4Demo.databinding.FragmentSignUpBinding;
+import com.example.Class4Demo.databinding.FragmentSignInBinding;
 import com.example.Class4Demo.model.Model;
 
 
-public class SignUpFragment extends Fragment {
+public class SignInFragment extends Fragment {
 
-    FragmentSignUpBinding binding;
+    FragmentSignInBinding binding;
     String uid;
-
-    public static SignUpFragment newInstance(String uid) {
-        SignUpFragment fragment = new SignUpFragment();
-        Bundle data = new Bundle();
-        data.putString("uid", uid);
-        fragment.setArguments(data);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,14 +44,15 @@ public class SignUpFragment extends Fragment {
         }, this, Lifecycle.State.RESUMED);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentSignUpBinding.inflate(inflater, container, false);
+        binding = FragmentSignInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        binding.registerBtn.setOnClickListener(v -> {
+        binding.signInBtn.setOnClickListener(v -> {
             String email = binding.emailTextField.getEditText().getText().toString();
             String password = binding.passwordTextField.getEditText().getText().toString();
             Log.d("TAG", "onCreateView: THE EMAIL AND PASSWORD|::::" + email + password);
@@ -71,14 +64,18 @@ public class SignUpFragment extends Fragment {
             }
 
 
-            Model.instance().signUp(email, password, data -> {
-                if (data.equals("")) {
-                    return;
+            Model.instance().signIn(email, password, success -> {
+                if (!success) {
+                    Toast.makeText(MyApplication.getMyContext(), "Login Failed, Try Again!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MyApplication.getMyContext(), "Log In Succeeded!!!",
+                            Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(v).navigate(SignInFragmentDirections
+                            .actionSignInFragmentToStudentsListFragment());
                 }
 
-                SignUpFragmentDirections.ActionSignUpFragmentToAddStudentFragment action
-                        = SignUpFragmentDirections.actionSignUpFragmentToAddStudentFragment(data);
-                Navigation.findNavController(view).navigate(action);
+
             });
         });
 

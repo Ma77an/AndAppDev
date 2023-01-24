@@ -2,15 +2,20 @@ package com.example.Class4Demo;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.Class4Demo.model.Model;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,13 +26,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NavHostFragment navHostFragment = (NavHostFragment)
-                getSupportFragmentManager().findFragmentById(R.id.main_navhost);
-        navController = navHostFragment.getNavController();
-        NavigationUI.setupActionBarWithNavController(this, navController);
+        FirebaseUser user = Model.instance().getAuth().getCurrentUser();
+        if (user != null) {
+            NavHostFragment navHostFragment = (NavHostFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.main_navhost);
+            navController = navHostFragment.getNavController();
+            NavigationUI.setupActionBarWithNavController(this, navController);
+            navController.navigate(R.id.studentsListFragment);
+            this.addMenuProvider(new MenuProvider() {
+                @Override
+                public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                    menu.removeItem(R.id.welcomeFragment);
+                }
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+                @Override
+                public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                    return false;
+                }
+            });
+
+            BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
+            NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        } else {
+            findViewById(R.id.main_bottomNavigationView).setVisibility(View.GONE);
+            NavHostFragment navHostFragment = (NavHostFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.main_navhost);
+            navController = navHostFragment.getNavController();
+            NavigationUI.setupActionBarWithNavController(this, navController);
+        }
+
 
     }
 

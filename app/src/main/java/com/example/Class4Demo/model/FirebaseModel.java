@@ -47,7 +47,7 @@ public class FirebaseModel {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void createStudent(String email, String password, Model.Listener<String> callback) {
+    public void signUp(String email, String password, Model.Listener<String> callback) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -69,6 +69,26 @@ public class FirebaseModel {
                 });
     }
 
+    public void signIn(String email, String password, Model.Listener<Boolean> callback) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInWithEmail:success");
+                            user = mAuth.getCurrentUser();
+                            callback.onComplete(true);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MyApplication.getMyContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            callback.onComplete(false);
+                        }
+                    }
+                });
+    }
 
     public void getAllStudentsSince(Long since, Model.Listener<List<Student>> callback) {
         db.collection(Student.COLLECTION)

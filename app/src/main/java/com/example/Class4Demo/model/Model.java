@@ -9,6 +9,8 @@ import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -76,8 +78,17 @@ public class Model {
         });
     }
 
-    public void createStudent(String email, String password, Listener<String> callback) {
-        firebaseModel.createStudent(email, password, callback);
+    public void signUp(String email, String password, Listener<String> callback) {
+        firebaseModel.signUp(email, password, callback);
+    }
+
+    public void signIn(String email, String password, Listener<Boolean> callback) {
+        firebaseModel.signIn(email, password, callback);
+    }
+
+
+    public FirebaseAuth getAuth() {
+        return firebaseModel.mAuth;
     }
 
 

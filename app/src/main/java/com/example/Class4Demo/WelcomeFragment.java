@@ -17,14 +17,11 @@ import androidx.lifecycle.Lifecycle;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.example.Class4Demo.databinding.FragmentAboutBinding;
-import com.example.Class4Demo.model.Model;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.Class4Demo.databinding.FragmentWelcomeBinding;
 
+public class WelcomeFragment extends Fragment {
 
-public class AboutFragment extends Fragment {
-
-    FragmentAboutBinding binding;
+    FragmentWelcomeBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +30,7 @@ public class AboutFragment extends Fragment {
         parentActivity.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.removeItem(R.id.aboutFragment);
+                menu.clear();
             }
 
             @Override
@@ -47,27 +44,20 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_about, container, false);
-        binding = FragmentAboutBinding.inflate(inflater, container, false);
+        binding = FragmentWelcomeBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        FirebaseUser user = Model.instance().getAuth().getCurrentUser();
+        binding.signInBtn.setOnClickListener(v -> {
+            NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToSignInFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
 
-        if (user != null) {
-            Model.instance().getStudentById(user.getUid(), data -> {
-                binding.textView4.setText("Name: " + data.getName());
-            });
-            binding.signOutBtn.setOnClickListener(v -> {
-                Model.instance().getAuth().signOut();
-                NavDirections action = AboutFragmentDirections.actionAboutFragmentToWelcomeFragment();
-                Navigation.findNavController(v).navigate(action);
-            });
-        } else {
-            binding.signOutBtn.setOnClickListener(v -> {
-                NavDirections action = AboutFragmentDirections.actionAboutFragmentToWelcomeFragment();
-                Navigation.findNavController(v).navigate(action);
-            });
-        }
-        return binding.getRoot();
+        binding.signUpBtn.setOnClickListener(v -> {
+            NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToSignUpFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
+
+        return view;
 
     }
 }

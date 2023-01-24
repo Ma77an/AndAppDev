@@ -142,8 +142,8 @@ public class AddStudentFragment extends Fragment {
             }
         });
 
-        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).
-                popBackStack(R.id.studentsListFragment, false));
+//        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).
+//                popBackStack(R.id.studentsListFragment, false));
 
         binding.cameraButton.setOnClickListener(v -> {
             cameraLauncher.launch(null);
