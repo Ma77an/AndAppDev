@@ -1,5 +1,6 @@
 package com.example.Class4Demo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,8 +15,6 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import com.example.Class4Demo.databinding.FragmentAboutBinding;
 import com.example.Class4Demo.model.Model;
@@ -58,15 +57,32 @@ public class AboutFragment extends Fragment {
             });
             binding.signOutBtn.setOnClickListener(v -> {
                 Model.instance().getAuth().signOut();
-                NavDirections action = AboutFragmentDirections.actionAboutFragmentToWelcomeFragment();
-                Navigation.findNavController(v).navigate(action);
-            });
-        } else {
-            binding.signOutBtn.setOnClickListener(v -> {
-                NavDirections action = AboutFragmentDirections.actionAboutFragmentToWelcomeFragment();
-                Navigation.findNavController(v).navigate(action);
+//                new Handler().post(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        Intent intent = getActivity().getIntent();
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+//                                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                        getActivity().overridePendingTransition(0, 0);
+//                        getActivity().finish();
+//
+//                        getActivity().overridePendingTransition(0, 0);
+//                        startActivity(intent);
+//                    }
+//                });
+                Intent i = new Intent(MyApplication.getMyContext(), WelcomeActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                getActivity().finish();
             });
         }
+//        else {
+//            binding.signOutBtn.setOnClickListener(v -> {
+//                NavDirections action = AboutFragmentDirections.actionAboutFragmentToWelcomeFragment();
+//                Navigation.findNavController(v).navigate(action);
+//            });
+//        }
         return binding.getRoot();
 
     }

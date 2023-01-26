@@ -27,7 +27,7 @@ import androidx.navigation.Navigation;
 import com.example.Class4Demo.databinding.FragmentAddPostBinding;
 import com.example.Class4Demo.model.Model;
 import com.example.Class4Demo.model.Post;
-import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.Timestamp;
 
 public class AddPostFragment extends Fragment {
 
@@ -85,6 +85,18 @@ public class AddPostFragment extends Fragment {
         binding = FragmentAddPostBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isChecked) {
+                binding.postImg.setVisibility(View.GONE);
+                binding.galleryButton.setVisibility(View.GONE);
+                binding.cameraButton.setVisibility(View.GONE);
+            } else {
+                binding.postImg.setVisibility(View.VISIBLE);
+                binding.galleryButton.setVisibility(View.VISIBLE);
+                binding.cameraButton.setVisibility(View.VISIBLE);
+            }
+            imagePost = isChecked;
+        });
 
         binding.saveBtn.setOnClickListener(view1 -> {
             binding.progressBar.setVisibility(View.VISIBLE);
@@ -92,43 +104,29 @@ public class AddPostFragment extends Fragment {
             String desc = binding.descriptionEt.getText().toString();
             imagePost = binding.switch1.isChecked();
             uid = Model.instance().getAuth().getCurrentUser().getUid();
-            String postId = uid + FieldValue.serverTimestamp().toString();
+            String postId = uid + Timestamp.now().getSeconds();
 
             Post pst = new Post(postId, uid, title, desc, imagePost, "");
 
-            binding.switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (!isChecked) {
-                    binding.postImg.setVisibility(View.GONE);
-                    binding.galleryButton.setVisibility(View.GONE);
-                    binding.cameraButton.setVisibility(View.GONE);
-                } else {
-                    binding.postImg.setVisibility(View.VISIBLE);
-                    binding.galleryButton.setVisibility(View.VISIBLE);
-                    binding.cameraButton.setVisibility(View.VISIBLE);
-                }
-                imagePost = isChecked;
-            });
 
-            if (imagePost) {
-                if (isImageSelected) {
-                    binding.postImg.setDrawingCacheEnabled(true);
-                    binding.postImg.buildDrawingCache();
-                    Bitmap bitmap = ((BitmapDrawable) binding.postImg.getDrawable()).getBitmap();
-                    Model.instance().uploadImage(postId, bitmap, url -> {
-                        if (url != null) {
-                            pst.setPhotoUrl(url);
-                        }
-                        Model.instance().addPost(pst, (unused) -> {
-                            Navigation.findNavController(view1).popBackStack();
-                            binding.progressBar.setVisibility(View.GONE);
-                        });
-                    });
-                } else {
+            if (imagePost && isImageSelected) {
+                binding.postImg.setDrawingCacheEnabled(true);
+                binding.postImg.buildDrawingCache();
+                Bitmap bitmap = ((BitmapDrawable) binding.postImg.getDrawable()).getBitmap();
+                Model.instance().uploadImage(postId, bitmap, url -> {
+                    if (url != null) {
+                        pst.setPhotoUrl(url);
+                    }
                     Model.instance().addPost(pst, (unused) -> {
                         Navigation.findNavController(view1).popBackStack();
                         binding.progressBar.setVisibility(View.GONE);
                     });
-                }
+                });
+            } else {
+                Model.instance().addPost(pst, (unused) -> {
+                    Navigation.findNavController(view1).popBackStack();
+                    binding.progressBar.setVisibility(View.GONE);
+                });
             }
         });
 
@@ -136,6 +134,7 @@ public class AddPostFragment extends Fragment {
         binding.cameraButton.setOnClickListener(v -> {
             cameraLauncher.launch(null);
         });
+
         binding.galleryButton.setOnClickListener(v -> {
             galleryAppLauncher.launch("image/*");
         });

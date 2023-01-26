@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -49,8 +48,8 @@ public class StudentsListFragment extends Fragment {
             }
         });
 
-        NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment("0147896325");
-        binding.btnAdd.setOnClickListener(Navigation.createNavigateOnClickListener(action));
+//        NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment("0147896325");
+//        binding.btnAdd.setOnClickListener(Navigation.createNavigateOnClickListener(action));
 
         viewModel.getData().observe(getViewLifecycleOwner(), list -> {
             adapter.setData(list);

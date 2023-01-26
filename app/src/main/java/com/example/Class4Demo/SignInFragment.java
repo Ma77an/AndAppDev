@@ -1,5 +1,6 @@
 package com.example.Class4Demo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
-import androidx.navigation.Navigation;
 
 import com.example.Class4Demo.databinding.FragmentSignInBinding;
 import com.example.Class4Demo.model.Model;
@@ -71,8 +71,25 @@ public class SignInFragment extends Fragment {
                 } else {
                     Toast.makeText(MyApplication.getMyContext(), "Log In Succeeded!!!",
                             Toast.LENGTH_SHORT).show();
-                    Navigation.findNavController(v).navigate(SignInFragmentDirections
-                            .actionSignInFragmentToStudentsListFragment());
+
+//                    new Handler().post(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            Intent intent = getActivity().getIntent();
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+//                                    | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                            getActivity().overridePendingTransition(0, 0);
+//                            getActivity().finish();
+//
+//                            getActivity().overridePendingTransition(0, 0);
+//                            startActivity(intent);
+//                        }
+//                    });
+                    Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    getActivity().finish();
                 }
 
 

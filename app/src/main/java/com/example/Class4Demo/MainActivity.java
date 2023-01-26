@@ -27,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseUser user = Model.instance().getAuth().getCurrentUser();
+
+        NavHostFragment navHostFragment = (NavHostFragment)
+                getSupportFragmentManager().findFragmentById(R.id.main_navhost);
+        navController = navHostFragment.getNavController();
+        NavigationUI.setupActionBarWithNavController(this, navController);
+
         if (user != null) {
-            NavHostFragment navHostFragment = (NavHostFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.main_navhost);
-            navController = navHostFragment.getNavController();
-            NavigationUI.setupActionBarWithNavController(this, navController);
-            navController.navigate(R.id.postListFragment);
+
             this.addMenuProvider(new MenuProvider() {
                 @Override
                 public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -48,11 +50,9 @@ public class MainActivity extends AppCompatActivity {
             BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         } else {
-            findViewById(R.id.main_bottomNavigationView).setVisibility(View.GONE);
-            NavHostFragment navHostFragment = (NavHostFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.main_navhost);
-            navController = navHostFragment.getNavController();
-            NavigationUI.setupActionBarWithNavController(this, navController);
+            navController.navigate(R.id.welcomeFragment);
+            findViewById(R.id.main_bottomAppBar).setVisibility(View.GONE);
+            findViewById(R.id.floatingActionButton2).setVisibility(View.GONE);
         }
 
 

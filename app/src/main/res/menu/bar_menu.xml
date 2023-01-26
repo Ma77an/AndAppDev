@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/studentsListFragment"
         android:icon="@android:drawable/btn_star"
-        android:title="List" />
+        android:title="List"
+        app:showAsAction="always" />
+
     <item
-        android:id="@+id/addStudentFragment"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="Add" />
+
+    app:showAsAction="always"/>
+<!--        android:id="@+id/addStudentFragment"-->
+<!--        android:icon="@android:drawable/ic_input_add"-->
+<!--        android:title="Add"-->
+<!--        app:showAsAction="ifRoom"/>-->
+
     <item
         android:id="@+id/aboutFragment"
         android:icon="@android:drawable/ic_dialog_info"
-        android:title="About" />
+        android:title="About"
+        app:showAsAction="always"/>
+
+
 </menu>
