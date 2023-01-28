@@ -57,32 +57,13 @@ public class AboutFragment extends Fragment {
             });
             binding.signOutBtn.setOnClickListener(v -> {
                 Model.instance().getAuth().signOut();
-//                new Handler().post(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        Intent intent = getActivity().getIntent();
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
-//                                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                        getActivity().overridePendingTransition(0, 0);
-//                        getActivity().finish();
-//
-//                        getActivity().overridePendingTransition(0, 0);
-//                        startActivity(intent);
-//                    }
-//                });
+
                 Intent i = new Intent(MyApplication.getMyContext(), WelcomeActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 getActivity().finish();
             });
         }
-//        else {
-//            binding.signOutBtn.setOnClickListener(v -> {
-//                NavDirections action = AboutFragmentDirections.actionAboutFragmentToWelcomeFragment();
-//                Navigation.findNavController(v).navigate(action);
-//            });
-//        }
         return binding.getRoot();
 
     }

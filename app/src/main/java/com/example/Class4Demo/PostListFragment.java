@@ -6,11 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.Class4Demo.databinding.FragmentPostListBinding;
@@ -47,11 +47,12 @@ public class PostListFragment extends Fragment {
             public void onItemClick(int pos) {
                 Log.d("TAG", "onItemClick: " + pos);
                 Post pst = mViewModel.getData().getValue().get(pos);
-//                StudentsListFragmentDirections.ActionStudentsListFragmentToBlueFragment action
-//                        = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(pst.getName(), pst.getId());
-//                Navigation.findNavController(view).navigate(action);
-                Toast.makeText(MyApplication.getMyContext(), "Post by: " + pst.getUid(),
-                        Toast.LENGTH_SHORT).show();
+                PostListFragmentDirections.ActionPostListFragmentToPostDetailsFragment action =
+                        PostListFragmentDirections
+                                .actionPostListFragmentToPostDetailsFragment(pst.getPostId());
+                Navigation.findNavController(view).navigate(action);
+//                Toast.makeText(MyApplication.getMyContext(), "Post by: " + pst.getUid(),
+//                        Toast.LENGTH_SHORT).show();
             }
         });
 

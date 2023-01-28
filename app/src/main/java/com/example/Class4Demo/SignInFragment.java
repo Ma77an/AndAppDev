@@ -17,6 +17,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
+import androidx.navigation.Navigation;
 
 import com.example.Class4Demo.databinding.FragmentSignInBinding;
 import com.example.Class4Demo.model.Model;
@@ -63,6 +64,12 @@ public class SignInFragment extends Fragment {
                 return;
             }
 
+            if (email.length() < 1) {
+                Toast.makeText(MyApplication.getMyContext(), "Please fill email to log in",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
 
             Model.instance().signIn(email, password, success -> {
                 if (!success) {
@@ -72,29 +79,16 @@ public class SignInFragment extends Fragment {
                     Toast.makeText(MyApplication.getMyContext(), "Log In Succeeded!!!",
                             Toast.LENGTH_SHORT).show();
 
-//                    new Handler().post(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            Intent intent = getActivity().getIntent();
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
-//                                    | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                            getActivity().overridePendingTransition(0, 0);
-//                            getActivity().finish();
-//
-//                            getActivity().overridePendingTransition(0, 0);
-//                            startActivity(intent);
-//                        }
-//                    });
                     Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                     getActivity().finish();
                 }
-
-
             });
         });
+
+        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).
+                popBackStack(R.id.welcomeFragment, false));
 
 
         return view;

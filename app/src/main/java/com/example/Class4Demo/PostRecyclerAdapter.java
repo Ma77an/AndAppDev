@@ -57,7 +57,7 @@ class PostViewHolder extends RecyclerView.ViewHolder {
                 }
             }
             if (!pst.getPhotoUrl().equals("")) {
-                Picasso.get().load(pst.getPhotoUrl()).placeholder(R.drawable.avatar).into(postImage);
+                Picasso.get().load(pst.getPhotoUrl()).placeholder(android.R.color.transparent).into(postImage);
             } else {
                 postImage.setImageResource(0);
             }

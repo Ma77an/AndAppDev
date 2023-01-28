@@ -2,7 +2,6 @@ package com.example.Class4Demo;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.Class4Demo.databinding.FragmentStudentsListBinding;
 import com.example.Class4Demo.model.Model;
-import com.example.Class4Demo.model.Student;
 
 public class StudentsListFragment extends Fragment {
     StudentRecyclerAdapter adapter;
@@ -37,16 +34,16 @@ public class StudentsListFragment extends Fragment {
         adapter = new StudentRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue());
         binding.recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new StudentRecyclerAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(int pos) {
-                Log.d("TAG", "onItemClick: " + pos);
-                Student st = viewModel.getData().getValue().get(pos);
-                StudentsListFragmentDirections.ActionStudentsListFragmentToBlueFragment action
-                        = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.getName(), st.getId());
-                Navigation.findNavController(view).navigate(action);
-            }
-        });
+//        adapter.setOnItemClickListener(new StudentRecyclerAdapter.onItemClickListener() {
+//            @Override
+//            public void onItemClick(int pos) {
+//                Log.d("TAG", "onItemClick: " + pos);
+//                Student st = viewModel.getData().getValue().get(pos);
+////                StudentsListFragmentDirections.ActionStudentsListFragmentToBlueFragment action
+////                        = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.getName(), st.getId());
+//                Navigation.findNavController(view).navigate(action);
+//            }
+//        });
 
 //        NavDirections action = StudentsListFragmentDirections.actionGlobalAddStudentFragment("0147896325");
 //        binding.btnAdd.setOnClickListener(Navigation.createNavigateOnClickListener(action));

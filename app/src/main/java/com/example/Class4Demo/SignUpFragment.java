@@ -82,6 +82,9 @@ public class SignUpFragment extends Fragment {
             });
         });
 
+        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).
+                popBackStack(R.id.welcomeFragment, false));
+
 
         return view;
     }

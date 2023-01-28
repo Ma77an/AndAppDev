@@ -13,6 +13,8 @@ import com.example.Class4Demo.model.Model;
 import com.example.Class4Demo.model.Student;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class BlueFragment extends Fragment {
 
 
@@ -23,15 +25,7 @@ public class BlueFragment extends Fragment {
     FragmentBlueBinding binding;
     String myTitle;
     String id;
-    Student st;
 
-    public static BlueFragment newInstance(String title, String stId) {
-        BlueFragment fragment = new BlueFragment();
-        Bundle data = new Bundle();
-        data.putString("ID", stId);
-        fragment.setArguments(data);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,21 +42,28 @@ public class BlueFragment extends Fragment {
         binding = FragmentBlueBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        if (Objects.equals(id, Model.instance().getAuth().getUid())) {
+            binding.detailsEditBtn.setVisibility(View.VISIBLE);
+        }
+
         binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().getStudentById(id, st1 -> {
             studentDetails(st1);
             binding.progressBar.setVisibility(View.GONE);
         });
 
+        binding.detailsEditBtn.setOnClickListener(v -> {
+
+        });
+
         return view;
     }
 
     public void studentDetails(Student st) {
-        binding.nameTv.setText("Name: " + st.getName());
-        binding.idTv.setText("ID: " + st.getId());
-        binding.phoneTv.setText("Phone: " + st.getPhone());
-        binding.addressTv.setText("Instagram: @" + st.getInstagram());
-        binding.bDayTv.setText("Birthday: " + st.getBirthday());
+        binding.nameTv2.setText(st.getName());
+        binding.phoneTv2.setText(st.getPhone());
+        binding.instagramTv2.setText("@" + st.getInstagram());
+        binding.bDayTv2.setText(st.getBirthday());
         if (!st.getAvatar().equals("")) {
             Picasso.get().load(st.getAvatar()).placeholder(R.drawable.avatar).into(binding.avatarImg);
         } else {
