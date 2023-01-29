@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.Class4Demo.databinding.FragmentBlueBinding;
 import com.example.Class4Demo.model.Model;
@@ -53,7 +54,9 @@ public class BlueFragment extends Fragment {
         });
 
         binding.detailsEditBtn.setOnClickListener(v -> {
-
+            BlueFragmentDirections.ActionBlueFragmentToEditStudentFragment action
+                    = BlueFragmentDirections.actionBlueFragmentToEditStudentFragment(id);
+            Navigation.findNavController(v).navigate(action);
         });
 
         return view;

@@ -54,7 +54,9 @@
                 android:id="@+id/post_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:contentDescription="post image"
+                android:maxHeight="300dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@android:drawable/sym_def_app_icon" />
 

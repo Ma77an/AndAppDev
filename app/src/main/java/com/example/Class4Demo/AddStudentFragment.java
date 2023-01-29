@@ -117,10 +117,12 @@ public class AddStudentFragment extends Fragment {
 
         binding.saveBtn.setOnClickListener(view1 -> {
             binding.progressBar.setVisibility(View.VISIBLE);
-            String name = binding.nameEt.getText().toString();
             String stId = binding.idEt.getText().toString();
+            String name = binding.nameEt.getText().toString();
+            String phone = binding.phoneEt.getText().toString();
+            String instagram = binding.instagramEt.getText().toString();
             String bDay = "" + d + "/" + (m + 1) + "/" + y;
-            Student st = new Student(stId, name, "", bDay, "", "");
+            Student st = new Student(stId, name, "", bDay, phone, instagram);
             if (isAvatarSelected) {
                 binding.avatarImg.setDrawingCacheEnabled(true);
                 binding.avatarImg.buildDrawingCache();

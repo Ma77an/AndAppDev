@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.Class4Demo.model.Model;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,22 +25,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseUser user = Model.instance().getAuth().getCurrentUser();
-        Model.instance().refreshAllPosts();
-        Model.instance().refreshAllStudents();
 
         NavHostFragment navHostFragment = (NavHostFragment)
                 getSupportFragmentManager().findFragmentById(R.id.main_navhost);
         navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController);
 
+        BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
         View addBtn = findViewById(R.id.floatingActionButton2);
         addBtn.setOnClickListener(v -> {
             navController.navigate(R.id.addPostFragment);
         });
 
+        bottomNavigationView.setOnItemReselectedListener(item -> {
+            navController.popBackStack(item.getItemId(), false);
+        });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
