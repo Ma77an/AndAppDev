@@ -51,6 +51,7 @@ public class Model {
 
     private LiveData<List<Student>> studentList;
     private LiveData<List<Post>> postList;
+    private LiveData<List<Post>> userPostsList;
 
     public LiveData<List<Student>> getAllStudents() {
         if (studentList == null) {
@@ -64,6 +65,13 @@ public class Model {
             postList = localDb.postDao().getAll();
         }
         return postList;
+    }
+
+    public LiveData<List<Post>> getUserPosts() {
+        if (userPostsList == null) {
+            userPostsList = localDb.postDao().getStudentPosts(firebaseModel.mAuth.getUid());
+        }
+        return userPostsList;
     }
 
     public void refreshAllStudents() {

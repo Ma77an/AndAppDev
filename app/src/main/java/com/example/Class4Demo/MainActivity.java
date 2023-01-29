@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Model.instance().refreshAllPosts();
+        Model.instance().refreshAllStudents();
+
         FirebaseUser user = Model.instance().getAuth().getCurrentUser();
 
         NavHostFragment navHostFragment = (NavHostFragment)

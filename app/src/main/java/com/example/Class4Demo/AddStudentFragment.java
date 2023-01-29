@@ -157,6 +157,8 @@ public class AddStudentFragment extends Fragment {
 //                    startActivity(intent);
 //                }
 //            });
+            Model.instance().refreshAllStudents();
+            Model.instance().refreshAllPosts();
             Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);

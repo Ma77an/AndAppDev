@@ -47,8 +47,8 @@ public class BlueFragment extends Fragment {
             binding.detailsEditBtn.setVisibility(View.VISIBLE);
         }
 
-        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().getStudentById(id, st1 -> {
+            binding.progressBar.setVisibility(View.VISIBLE);
             studentDetails(st1);
             binding.progressBar.setVisibility(View.GONE);
         });

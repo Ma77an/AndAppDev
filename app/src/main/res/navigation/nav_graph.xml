@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/blueFragment"
         android:name="com.example.Class4Demo.BlueFragment"
-        android:label="fragment_blue"
+        android:label="Student Profile"
         tools:layout="@layout/fragment_blue">
         <argument
             android:name="studentId"
@@ -20,16 +20,19 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.Class4Demo.AboutFragment"
-        android:label="About"
+        android:label="My Profile"
         tools:layout="@layout/fragment_about">
         <action
             android:id="@+id/action_aboutFragment_to_editStudentFragment"
             app:destination="@id/editStudentFragment" />
+        <action
+            android:id="@+id/action_aboutFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/postListFragment"
         android:name="com.example.Class4Demo.PostListFragment"
-        android:label="fragment_post_list"
+        android:label="New Feed"
         tools:layout="@layout/fragment_post_list">
         <action
             android:id="@+id/action_postListFragment_to_postDetailsFragment"
@@ -41,7 +44,7 @@
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.Class4Demo.AddPostFragment"
-        android:label="fragment_add_post"
+        android:label="Create a Post"
         tools:layout="@layout/fragment_add_post" />
     <action
         android:id="@+id/action_global_postListFragment"
@@ -49,7 +52,7 @@
     <fragment
         android:id="@+id/postDetailsFragment"
         android:name="com.example.Class4Demo.PostDetailsFragment"
-        android:label="fragment_post_details"
+        android:label="Post Details"
         tools:layout="@layout/fragment_post_details">
         <argument
             android:name="postId"
@@ -61,7 +64,7 @@
     <fragment
         android:id="@+id/editStudentFragment"
         android:name="com.example.Class4Demo.EditStudentFragment"
-        android:label="fragment_edit_student"
+        android:label="Edit Info"
         tools:layout="@layout/fragment_edit_student">
         <argument
             android:name="uid"

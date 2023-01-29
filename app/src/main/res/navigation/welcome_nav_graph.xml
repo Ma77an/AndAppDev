@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/addStudentFragment"
         android:name="com.example.Class4Demo.AddStudentFragment"
-        android:label="Add Student"
+        android:label="About Me"
         tools:layout="@layout/fragment_add_student">
         <argument
             android:name="uid"
@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.example.Class4Demo.SignUpFragment"
-        android:label="fragment_sign_up"
+        android:label="Sign Up"
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_addStudentFragment"
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.example.Class4Demo.SignInFragment"
-        android:label="SignInFragment" />
+        android:label="Sign In" />
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="com.example.Class4Demo.WelcomeFragment"

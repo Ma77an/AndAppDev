@@ -19,8 +19,8 @@ public interface PostDao {
     @Query("select * from Post where postId=:postId")
     Post getPosyById(String postId);
 
-    @Query("select * from Post where uid=:uid")
-    List<Post> getStudentPosts(String uid);
+    @Query("select * from Post where uid=:uid order by lastUpdated desc")
+    LiveData<List<Post>> getStudentPosts(String uid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Post... posts);
