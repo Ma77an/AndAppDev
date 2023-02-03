@@ -1,26 +1,17 @@
 package com.example.Class4Demo;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.os.HandlerCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -29,31 +20,23 @@ import com.example.Class4Demo.model.Model;
 import com.example.Class4Demo.model.Results;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.logging.type.HttpRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    String API = "d154e01470f2e0a318ad97ac7b413442";
+    String weatherIcon;
+    String weatherInfo;
     NavController navController;
-//    LocationManager lc = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//    Criteria criteria = new Criteria();
-//    String locality;
+    ActionBar actionBar;
 
+    private final Executor executor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         Model.instance().refreshAllPosts();
         Model.instance().refreshAllStudents();
+
 
         FirebaseUser user = Model.instance().getAuth().getCurrentUser();
         NavHostFragment navHostFragment = (NavHostFragment)
@@ -71,34 +55,37 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
+        actionBar = getSupportActionBar();
+
         View addBtn = findViewById(R.id.floatingActionButton2);
         addBtn.setOnClickListener(v -> {
             navController.navigate(R.id.addPostFragment);
         });
 
-        findViewById(R.id.weather);
-
         bottomNavigationView.setOnItemReselectedListener(item -> {
             navController.popBackStack(item.getItemId(), false);
         });
-        getWeatherData("tel aviv");
+
     }
 
+    MenuItem weather;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu, menu);
+        getWeatherData("Rishon LeZion", menu.findItem(R.id.weather_info));
+        weather = menu.findItem(R.id.weather_info);
+        weather.setIcon(weather.getIcon());
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == R.id.aboutFragment) {
-//            new AlertDialogFragment().show(getSupportFragmentManager(), "TAG");
-//            return true;}else
-
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == R.id.weather_icon) {
+            item.setIcon(weather.getIcon());
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
         } else {
             return NavigationUI.onNavDestinationSelected(item, navController);
@@ -106,35 +93,75 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void getWeatherData(String name){
+    private void getWeatherData(String name, MenuItem item) {
 
-        Api apiInterface = RetrofitClient.getInstance().getMyApi();
+        executor.execute(() -> {
+            WeatherApi weatherApiInterface = RetrofitClient.getInstance().getMyApi();
 
-        Call<Results> call = apiInterface.getWeatherData(name);
+            Call<Results> call = weatherApiInterface.getWeatherData(name);
 
-        call.enqueue(new Callback<Results>() {
-            @Override
-            public void onResponse(Call<Results> call, Response<Results> response) {
-                String ll = response.body().getWeather().get(0).getDescription();
-                Log.d("TAG", "onItemClick: " + ll);
+            call.enqueue(new Callback<Results>() {
+                @Override
+                public void onResponse(Call<Results> call, Response<Results> response) {
+                    weatherInfo = response.body().getMain().getTemp() + "°C" + " - " +
+                            response.body().getWeather().get(0).getDescription();
+                    weatherIcon = response.body().getWeather().get(0).getIconUrl();
+                    item.setTitle(weatherInfo);
+                    Log.d("TAG", "getWeather: " + response.body().getWeather().get(0).getIconUrl());
+                }
 
-
-            }
-
-            @Override
-            public void onFailure(Call<Results> call, Throwable t) {
-
-            }
+                @Override
+                public void onFailure(Call<Results> call, Throwable t) {
+                }
+            });
+            mainHandler.post(() -> item.setTitle(weatherInfo));
         });
-
     }
 
-
-
-
-
-
-
-
-
 }
+
+
+//    private void getWeatherData(String name, MenuItem item) {
+//
+//        executor.execute(() -> {
+//            WeatherApi weatherApiInterface = RetrofitClient.getInstance().getMyApi();
+//
+//            Call<Results> call = weatherApiInterface.getWeatherData(name);
+//
+//            call.enqueue(new Callback<Results>() {
+//                @Override
+//                public void onResponse(Call<Results> call, Response<Results> response) {
+//                    weatherInfo = response.body().getMain().getTemp() + "°C" + " - " +
+//                            response.body().getWeather().get(0).getDescription();
+//                    weatherIcon = response.body().getWeather().get(0).getIconUrl();
+//                    item.setTitle(weatherInfo);
+//                    Log.d("TAG", "getWeather: " + response.body().getWeather().get(0).getIconUrl());
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Results> call, Throwable t) {
+//                }
+//            });
+//            mainHandler.post(() -> item.setTitle(weatherInfo));
+//        });
+//    }
+// Picasso.get().load(response.body().getWeather().get(0).getIconUrl())
+//         .placeholder(R.drawable.twotone_waving_hand_24)
+//         .into(new Target() {
+//@Override
+//public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//        Log.d("onPrepareLoad", "icon loaded " + bitmap.toString());
+//        item.setIcon(new BitmapDrawable(getResources(), bitmap));
+//        }
+//
+//@Override
+//public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+//        Log.d("onPrepareLoad", "Loading failed" + e.toString());
+//        }
+//
+//@Override
+//public void onPrepareLoad(Drawable placeHolderDrawable) {
+//        Log.d("onPrepareLoad", "Loading your icon...");
+////                                item.setIcon(placeHolderDrawable);
+//        }
+//        });

@@ -5,13 +5,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static RetrofitClient instance = null;
-    private Api myApi;
+    private WeatherApi myWeatherApi;
 
     private RetrofitClient() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        myApi = retrofit.create(Api.class);
+        myWeatherApi = retrofit.create(WeatherApi.class);
     }
 
     public static synchronized RetrofitClient getInstance() {
@@ -21,7 +22,7 @@ public class RetrofitClient {
         return instance;
     }
 
-    public Api getMyApi() {
-        return myApi;
+    public WeatherApi getMyApi() {
+        return myWeatherApi;
     }
 }

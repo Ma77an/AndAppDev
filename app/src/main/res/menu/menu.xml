@@ -2,17 +2,12 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/weather"
+        android:id="@+id/weather_icon"
+        android:icon="@drawable/twotone_waving_hand_24"
+        android:title="weather_icon"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/weather_info"
         android:title="Weather"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/addPostFragment"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="Add"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/aboutFragment"
-        android:icon="@drawable/ic_outline_info_24"
-        android:title="About"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|withText" />
 </menu>
