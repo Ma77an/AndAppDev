@@ -85,7 +85,8 @@
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/monoton"
                 android:text="Edit"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -101,6 +102,7 @@
 
             <TextView
                 android:id="@+id/desc_tv"
+                style="@android:style/Widget.Material.TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -27,11 +27,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <Switch
                 android:id="@+id/switch1"
+                style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:checked="true"
                 android:fontFamily="@font/monoton"
                 android:text="Image Post"
@@ -46,6 +46,7 @@
                 android:id="@+id/post_img"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
+                android:layout_marginTop="4dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -149,14 +150,15 @@
 
             <Button
                 android:id="@+id/save_btn"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="64dp"
-                android:text="SAVE"
                 android:fontFamily="@font/monoton"
+                android:text="SAVE"
                 android:textSize="34sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

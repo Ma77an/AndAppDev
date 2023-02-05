@@ -25,10 +25,11 @@
 
     <Button
         android:id="@+id/signIn_btn"
+        style="@style/Widget.Material3.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="10dp"
         android:elevation="8dp"
         android:fontFamily="@font/monoton"
         android:text="Sign In"
@@ -40,12 +41,13 @@
 
     <Button
         android:id="@+id/signUp_btn"
+        style="@style/Widget.Material3.Button.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="64dp"
-        android:elevation="8dp"
+        android:ellipsize="none"
         android:fontFamily="@font/monoton"
         android:text="Sign Up"
         android:textSize="32sp"
