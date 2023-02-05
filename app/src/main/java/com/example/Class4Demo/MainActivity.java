@@ -1,5 +1,8 @@
 package com.example.Class4Demo;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +23,8 @@ import com.example.Class4Demo.model.Model;
 import com.example.Class4Demo.model.Results;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -29,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    String weatherIcon;
+    Weather weather;
     String weatherInfo;
     NavController navController;
     ActionBar actionBar;
@@ -41,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Model.instance().refreshAllPosts();
+        
         Model.instance().refreshAllStudents();
 
 
@@ -68,22 +72,42 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    MenuItem weather;
+    MenuItem icon;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu, menu);
+        icon = menu.findItem(R.id.weather_icon);
         getWeatherData("Rishon LeZion", menu.findItem(R.id.weather_info));
-        weather = menu.findItem(R.id.weather_info);
-        weather.setIcon(weather.getIcon());
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.weather_icon) {
-            item.setIcon(weather.getIcon());
+        if (item.getItemId() == R.id.weather_info) {
+            Picasso.get().load(weather.getIconUrl())
+                    .placeholder(R.drawable.twotone_waving_hand_24)
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            Log.d("onPrepareLoad", "icon loaded " + bitmap.toString());
+                            icon.setIcon(new BitmapDrawable(getResources(), bitmap));
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                            Log.d("onPrepareLoad", "Loading failed" + e.toString());
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            Log.d("onPrepareLoad", "Loading your icon...");
+//                                item.setIcon(placeHolderDrawable);
+                        }
+                    });
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             navController.popBackStack();
@@ -105,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<Results> call, Response<Results> response) {
                     weatherInfo = response.body().getMain().getTemp() + "°C" + " - " +
                             response.body().getWeather().get(0).getDescription();
-                    weatherIcon = response.body().getWeather().get(0).getIconUrl();
+                    weather = response.body().getWeather().get(0);
                     item.setTitle(weatherInfo);
                     Log.d("TAG", "getWeather: " + response.body().getWeather().get(0).getIconUrl());
                 }
