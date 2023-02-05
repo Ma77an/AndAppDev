@@ -69,6 +69,12 @@ public class PostDetailsFragment extends Fragment {
             }
         });
 
+        binding.editBtn.setOnClickListener(v -> {
+            PostDetailsFragmentDirections.ActionPostDetailsFragmentToEditPostFragment action =
+                    PostDetailsFragmentDirections.actionPostDetailsFragmentToEditPostFragment(postId);
+            Navigation.findNavController(view).navigate(action);
+        });
+
         return view;
     }
 }

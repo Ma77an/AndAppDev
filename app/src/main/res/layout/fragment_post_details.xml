@@ -79,13 +79,13 @@
 
             <Button
                 android:id="@+id/edit_btn"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Edit"
                 android:fontFamily="@font/monoton"
-                android:textSize="34sp"
-                android:visibility="gone" />
+                android:text="Edit"
+                android:textSize="24sp" />
 
             <ImageView
                 android:id="@+id/imageView"

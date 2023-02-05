@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 import com.example.Class4Demo.MyApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
@@ -21,7 +22,7 @@ public class Post {
     private String uid = "";
     private String title = "";
     private String desc = "";
-    private Boolean isPhoto = false;
+    Boolean isPhoto = false;
     private String photoUrl = "";
 
     private Long lastUpdated;
