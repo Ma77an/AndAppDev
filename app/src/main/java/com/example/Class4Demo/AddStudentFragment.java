@@ -134,12 +134,24 @@ public class AddStudentFragment extends Fragment {
                     Model.instance().addStudent(st, (unused) -> {
 //                        Navigation.findNavController(view1).popBackStack();
                         binding.progressBar.setVisibility(View.GONE);
+                        Model.instance().refreshAllStudents();
+                        Model.instance().refreshAllPosts();
+                        Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                        getActivity().finish();
                     });
                 });
             } else {
                 Model.instance().addStudent(st, (unused) -> {
 //                    Navigation.findNavController(view1).popBackStack();
                     binding.progressBar.setVisibility(View.GONE);
+                    Model.instance().refreshAllStudents();
+                    Model.instance().refreshAllPosts();
+                    Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    getActivity().finish();
                 });
             }
 
@@ -157,12 +169,7 @@ public class AddStudentFragment extends Fragment {
 //                    startActivity(intent);
 //                }
 //            });
-            Model.instance().refreshAllStudents();
-            Model.instance().refreshAllPosts();
-            Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-            getActivity().finish();
+
         });
 
 //        binding.cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).
