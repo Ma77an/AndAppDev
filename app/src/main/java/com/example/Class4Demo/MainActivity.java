@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     String weatherInfo;
     NavController navController;
     ActionBar actionBar;
+    BottomNavigationView bottomNavigationView;
 
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         Model.instance().refreshAllStudents();
 
 
@@ -56,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-        actionBar = getSupportActionBar();
 
         View addBtn = findViewById(R.id.floatingActionButton2);
         addBtn.setOnClickListener(v -> {
@@ -69,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemReselectedListener(item -> {
             navController.popBackStack(item.getItemId(), false);
         });
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+                    navController.navigate(item.getItemId());
+                    return true;
+                }
+        );
 
     }
 
@@ -141,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             mainHandler.post(() -> item.setTitle(weatherInfo));
         });
     }
-
 }
 
 
