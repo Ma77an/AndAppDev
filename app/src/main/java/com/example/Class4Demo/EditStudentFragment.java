@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -120,13 +121,17 @@ public class EditStudentFragment extends Fragment {
                         st.setAvatar(url);
                     }
                     Model.instance().addStudent(st, (unused) -> {
-                        Navigation.findNavController(view1).popBackStack();
+                        Navigation.findNavController(view1).popBackStack(R.id.postListFragment, false);
+                        Toast.makeText(MyApplication.getMyContext(), "Profile updated!",
+                                Toast.LENGTH_SHORT).show();
                         binding.progressBar.setVisibility(View.GONE);
                     });
                 });
             } else {
                 Model.instance().addStudent(st, (unused) -> {
-                    Navigation.findNavController(view1).popBackStack();
+                    Navigation.findNavController(view1).popBackStack(R.id.postListFragment, false);
+                    Toast.makeText(MyApplication.getMyContext(), "Profile updated!",
+                            Toast.LENGTH_SHORT).show();
                     binding.progressBar.setVisibility(View.GONE);
                 });
             }

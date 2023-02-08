@@ -75,4 +75,9 @@ public class BlueFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 }

@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/postListFragment"
         android:name="com.example.Class4Demo.PostListFragment"
-        android:label="New Feed"
+        android:label="News Feed"
         tools:layout="@layout/fragment_post_list">
         <action
             android:id="@+id/action_postListFragment_to_postDetailsFragment"
@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_postDetailsFragment_to_blueFragment"
             app:destination="@id/blueFragment" />
+        <action
+            android:id="@+id/action_postDetailsFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/editStudentFragment"
@@ -68,6 +71,15 @@
         tools:layout="@layout/fragment_edit_student">
         <argument
             android:name="uid"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="com.example.Class4Demo.EditPostFragment"
+        android:label="Edit Post"
+        tools:layout="@layout/fragment_edit_post">
+        <argument
+            android:name="postId"
             app:argType="string" />
     </fragment>
 </navigation>

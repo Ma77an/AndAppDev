@@ -42,6 +42,7 @@ public class PostListFragment extends Fragment {
         adapter = new PostRecyclerAdapter(getLayoutInflater(), mViewModel.getData().getValue());
         binding.postsRecyclerView.setAdapter(adapter);
 
+
         adapter.setOnItemClickListener(new PostRecyclerAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int pos) {
@@ -82,5 +83,4 @@ public class PostListFragment extends Fragment {
 //        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().refreshAllPosts();
     }
-
 }

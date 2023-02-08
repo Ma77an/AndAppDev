@@ -74,6 +74,8 @@ public class AboutFragment extends Fragment {
 
         binding.signOutBtn.setOnClickListener(v -> {
             Model.instance().getAuth().signOut();
+            mViewModel.clearData();
+
 
             Intent i = new Intent(MyApplication.getMyContext(), WelcomeActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

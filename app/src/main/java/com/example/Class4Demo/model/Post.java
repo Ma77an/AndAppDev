@@ -22,7 +22,7 @@ public class Post {
     private String uid = "";
     private String title = "";
     private String desc = "";
-    private Boolean isPhoto = false;
+    Boolean isPhoto = false;
     private String photoUrl = "";
 
     private Long lastUpdated;

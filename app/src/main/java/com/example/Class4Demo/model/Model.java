@@ -74,6 +74,10 @@ public class Model {
         return userPostsList;
     }
 
+    public void refreshUserPosts() {
+        userPostsList = null;
+    }
+
     public void refreshAllStudents() {
         EventStudentsListLoadingState.setValue(LoadingState.LOADING);
         //get local last update
