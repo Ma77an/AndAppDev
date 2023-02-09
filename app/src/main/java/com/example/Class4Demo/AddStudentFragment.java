@@ -133,11 +133,11 @@ public class AddStudentFragment extends Fragment {
                     }
                     Model.instance().addStudent(st, (unused) -> {
 //                        Navigation.findNavController(view1).popBackStack();
-                        binding.progressBar.setVisibility(View.GONE);
                         Model.instance().refreshAllStudents();
                         Model.instance().refreshAllPosts();
                         Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        binding.progressBar.setVisibility(View.GONE);
                         startActivity(i);
                         getActivity().finish();
                     });
@@ -145,11 +145,11 @@ public class AddStudentFragment extends Fragment {
             } else {
                 Model.instance().addStudent(st, (unused) -> {
 //                    Navigation.findNavController(view1).popBackStack();
-                    binding.progressBar.setVisibility(View.GONE);
                     Model.instance().refreshAllStudents();
                     Model.instance().refreshAllPosts();
                     Intent i = new Intent(MyApplication.getMyContext(), MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    binding.progressBar.setVisibility(View.GONE);
                     startActivity(i);
                     getActivity().finish();
                 });
