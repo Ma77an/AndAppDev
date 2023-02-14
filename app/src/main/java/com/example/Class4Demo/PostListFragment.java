@@ -82,5 +82,6 @@ public class PostListFragment extends Fragment {
     void reloadData() {
 //        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().refreshAllPosts();
+        Model.instance().refreshAllStudents();
     }
 }
